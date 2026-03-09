@@ -61,6 +61,7 @@ $medals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode([
-    'athlete' => $athlete,
+    'athlete' => [$athlete],
     'medals'  => $medals
 ]);
+?>

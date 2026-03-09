@@ -339,7 +339,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
     </div>
 
     <!-- ── General table ────────────────────────────────────────── -->
-    <table id="medals-table" class="table table-striped table-bordered">
+    <table id="general-table" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Meno a priezvisko</th>
@@ -362,7 +362,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
 
 <script>
 $(document).ready(function () {
-    $('#medals-table').DataTable({
+    $('#general-table').DataTable({ //initialize DataTable function to general-table found by JQuery
         ajax: {
             url: 'data_general.php',
             dataSrc: 'data'
