@@ -288,7 +288,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
 }
 ?>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
@@ -300,12 +300,101 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
     <input type="file" name="csv_file" accept=".csv" required>
     <br><br>
     <button type="submit">Nahrať a spracovať</button>
-</form>
+</form> -->
 
-<?php if (!empty($data)): ?>
+<!-- <?php if (!empty($data)): ?>
     <h3>Obsah súboru:</h3>
     <pre><?php print_r($data); ?></pre>
-<?php endif; ?>
+<?php endif; ?> -->
 
+<!-- </body>
+</html>  -->
+
+
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Olympijské medaily</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Datatables + Bootstrap 5 skin -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+
+    <h2>Slovenské olympijské medaily</h2>
+
+    <!-- ── Upload section ───────────────────────────────────────── -->
+    <div class="card mb-4">
+        <div class="card-header">Nahrať dáta (CSV)</div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data" class="d-flex gap-2 align-items-center">
+                <input type="file" name="csv_file" accept=".csv" required class="form-control w-auto">
+                <button type="submit" class="btn btn-primary">Nahrať a spracovať</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── General table ────────────────────────────────────────── -->
+    <table id="medals-table" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Meno a priezvisko</th>
+                <th>Krajina OH</th>
+                <th>Rok OH</th>
+                <th>Umiestnenie</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Datatables fills this via AJAX from data_general.php -->
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#medals-table').DataTable({
+        ajax: {
+            url: 'data_general.php',
+            dataSrc: 'data'
+        },
+        columns: [
+            {
+                // Combine first_name + last_name into a clickable link
+                // athlete.php?id=X is a dummy link for now — detail page comes later
+                data: null,
+                render: function (row) {
+                    return '<a href="athlete.php?id=' + row.athlete_id + '">'
+                         + row.first_name + ' ' + row.last_name
+                         + '</a>';
+                }
+            },
+            { data: 'birth_country' },
+            { data: 'oh_year' },
+            { data: 'placing' }
+        ],
+        order: [[2, 'asc']],   // default sort by year ascending
+        pageLength: 25,
+        language: {
+            search: "Hľadať:",
+            lengthMenu: "Zobraziť _MENU_ záznamov",
+            info: "Zobrazené _START_ až _END_ z _TOTAL_ záznamov",
+            paginate: {
+                previous: "Predchádzajúca",
+                next: "Nasledujúca"
+            }
+        }
+    });
+});
+</script>
 </body>
 </html>
