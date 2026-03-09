@@ -364,7 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
 $(document).ready(function () {
     $('#general-table').DataTable({ //initialize DataTable function to general-table found by JQuery
         ajax: {
-            url: 'data_general.php',
+            url: 'api/data_general.php',
             dataSrc: 'data'
         },
         columns: [

@@ -80,7 +80,7 @@ if (!$athlete) {
 $(document).ready(function () {
     $('#athlete-main-table').DataTable({
         ajax: {
-            url: 'data_athlete.php?id=<?= $athleteId ?>',
+            url: 'api/data_athlete.php?id=<?= $athleteId ?>',
             dataSrc: 'athlete'
         },
         columns: [
@@ -112,7 +112,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#athlete-medals-table').DataTable({
         ajax: {
-            url: 'data_athlete.php?id=<?= $athleteId ?>',
+            url: 'api/data_athlete.php?id=<?= $athleteId ?>',
             dataSrc: 'medals'
         },
 

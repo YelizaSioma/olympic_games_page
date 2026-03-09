@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/../config.php');
 $conn = connectDatabase($hostname, $database, $username, $password);
 
 // Get athlete ID from endpoint string, if wasn't provided then 0 then error
