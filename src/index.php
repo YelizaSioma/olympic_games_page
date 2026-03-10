@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 require_once(__DIR__ . '/config.php');
 
@@ -288,28 +289,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
 }
 ?>
 
-<!-- <!DOCTYPE html>
-<html lang="sk">
-<head>
-    <meta charset="UTF-8">
-    <title>CSV Upload</title>
-</head>
-<body>
-
-<form method="POST" enctype="multipart/form-data">
-    <input type="file" name="csv_file" accept=".csv" required>
-    <br><br>
-    <button type="submit">Nahrať a spracovať</button>
-</form> -->
-
-<!-- <?php if (!empty($data)): ?>
-    <h3>Obsah súboru:</h3>
-    <pre><?php print_r($data); ?></pre>
-<?php endif; ?> -->
-
-<!-- </body>
-</html>  -->
-
 
 <!DOCTYPE html>
 <html lang="sk">
@@ -323,6 +302,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 </head>
 <body>
+
+<?php
+    
+    if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true ) {
+        // Pouzivatel nie je prihlaseny, zobraz odkazy na prihlasovaci a registracny formular.
+        echo '<p>Pre pokračovanie sa prosím <a href="login.php">prihláste</a> alebo sa <a href="register.php">zaregistrujte</a>.</p>';
+    } else {
+        // Pouzivatel je prihlaseny, zobraz jeho meno a odkazy na zabezpecene stranky.
+        echo '<h3>Vitaj ' . $_SESSION['full_name'] . ' </h3>';
+        echo '<a href="index.php">Hlavna stránka</a>';
+    }
+
+?>
+
+<?php
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+?>
+
 <div class="container mt-4">
 
     <h2>Slovenské olympijské medaily</h2>
@@ -396,5 +393,10 @@ $(document).ready(function () {
     });
 });
 </script>
+
+<?php
+}
+?>
+
 </body>
 </html>
