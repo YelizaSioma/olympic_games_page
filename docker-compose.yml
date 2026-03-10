@@ -18,6 +18,8 @@ services:
       - ./src:/var/www/html
     depends_on:
       - db
+    environment:
+      COMPOSER_PROCESS_TIMEOUT: 1000
 
   db:
     image: mariadb:11
