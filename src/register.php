@@ -189,11 +189,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php
 if (isset($qr_code)) {
-    // Ak sme po uspesnej registracii vygenerovali QR kod, zobrazime ho na stranke
-    $message = '<p>Zadajte kód: ' . $user_secret . ' do aplikácie pre 2FA</p>';
-    $message .= '<p>alebo naskenujte QR kód:<br><img src="' . $qr_code . '" alt="qr kod pre aplikaciu authenticator"></p>';
-    echo $message;
-    echo '<p>Teraz sa môžete prihlásiť: <a href="login.php">Login stránka</a></p>';
+    // Ak sme po uspesnej registracii vygenerovali QR kod, zobrazime ho na stranke v stylovanom bloku
+    ?>
+    <div class="mt-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h2 class="page-title-accent mb-3" style="font-size: 1.6em;">
+            Nastavte si 2FA ochranu
+          </h2>
+          <p class="mb-2 fs-5">
+            Zadajte kód:
+            <strong><?php echo htmlspecialchars($user_secret, ENT_QUOTES, 'UTF-8'); ?></strong>
+            do aplikácie pre 2FA.
+          </p>
+          <p class="mb-3 fs-5">
+            alebo naskenujte QR kód:
+          </p>
+          <div class="mb-3">
+            <img src="<?php echo $qr_code; ?>" alt="QR kód pre aplikáciu authenticator" class="img-fluid">
+          </div>
+          <p class="mb-0 fs-5">
+            Teraz sa môžete prihlásiť:
+            <a href="login.php" class="fw-bold fs-5">Login stránka</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <?php
 }
 ?>
 </main>

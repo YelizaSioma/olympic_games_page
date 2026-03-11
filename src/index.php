@@ -389,10 +389,14 @@ if ($isLoggedIn) {
 <div class="container mt-4">
     <main>
         
-    <h3>Vitaj <?php echo $_SESSION['full_name'] ?></h3>
-    <p><strong>e-mail:</strong> <?php echo $_SESSION['email']; ?></p>
+    <h1 class="page-title-accent mb-2" style="font-size: 2.1em;">
+        Vitaj <?php echo htmlspecialchars($_SESSION['full_name'], ENT_QUOTES, 'UTF-8'); ?>
+    </h1>
+    <p class="mb-4 fs-5">
+        <strong>e‑mail:</strong> <?php echo htmlspecialchars($_SESSION['email'], ENT_QUOTES, 'UTF-8'); ?>
+    </p>
 
-    <h2>Slovenské olympijské medaily</h2>
+    <h2 class="mb-3" style="font-size: 1.8em;">Slovenské olympijské medaily</h2>
 
     <!-- ── Upload section ───────────────────────────────────────── -->
     <div class="card mb-4">
@@ -432,6 +436,12 @@ if ($isLoggedIn) {
 <script>
 $(document).ready(function () {
     $('#general-table').DataTable({ //initialize DataTable function to general-table found by JQuery
+        responsive: true,
+        autoWidth: false,
+        dom:
+            "<'row mb-3'<'col-sm-6'l><'col-sm-6'f>>" +
+            "<'row'<'col-12'tr>>" +
+            "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
         ajax: {
             url: 'api/data_general.php',
             dataSrc: 'data'
