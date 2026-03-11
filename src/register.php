@@ -10,6 +10,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 require_once __DIR__ . '/config.php';  // Pripojenie konfiguracneho suboru s pripojenim na DB
 require_once __DIR__ . '/utils.php';  // Externy subor s funkciami isEmpty, userExist a pod...
 
+require_once 'vendor/autoload.php';  // Nacitanie kniznice
+
+use RobThree\Auth\Providers\Qr\BaconQrCodeProvider;  // Cesta pre triedu providera generatora QR kodu.
+use RobThree\Auth\TwoFactorAuth;  // Cesta pre triedu generovania 2FA kodu.
+
 $pdo = connectDatabase($hostname, $database, $username, $password);
 
 $errors = "";
@@ -67,19 +72,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vypisat error aky uzivatelu
 
     if (empty($errors)) {
-        $stmt = $pdo->prepare("INSERT INTO user_accounts (first_name, last_name, email, password_hash) VALUES (:first_name, :last_name, :email, :password_hash)");
+        $stmt = $pdo->prepare("INSERT INTO user_accounts (first_name, last_name, email, password_hash, tfa_secret) VALUES (:first_name, :last_name, :email, :password_hash, :tfa_secret)");
 
         $pw_hash = password_hash($_POST['password'], PASSWORD_ARGON2ID);
+
+        // Vytvorenie 2FA kodu a konstruktora kniznice pre QR kod.
+        // Pripadne zmeny alebo personalizaciu pozri: https://robthree.github.io/TwoFactorAuth/
+        $tfa = new TwoFactorAuth(new BaconQrCodeProvider(4, '#ffffff', '#000000', 'svg'));
+        $user_secret = $tfa->createSecret(); // Vygenerovanie kodu, ktory sa ulozi do databazy.
+        // Vygenerovanie QR kodu pre naskenovanie mob. aplikaciou pre TOTP, napr. Google Authenticator a pod.
+        $qr_code = $tfa->getQRCodeImageAsDataUri('Olympic Games APP', $user_secret);  
 
         $stmt->bindParam(":first_name", $_POST['first_name'], PDO::PARAM_STR);
         $stmt->bindParam(":last_name", $_POST['last_name'], PDO::PARAM_STR);
         $stmt->bindParam(":email", $_POST['email'], PDO::PARAM_STR);
         $stmt->bindParam(":password_hash", $pw_hash, PDO::PARAM_STR);
+        $stmt->bindParam(":tfa_secret", $user_secret, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
-            // Presmeruj pouzivatela na prihlasenie
-            header("location: login.php");
-            exit;
         } else {
             $errors = "Chyba pri registracii.";
         }
@@ -92,38 +102,101 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!doctype html>
 <html lang="sk">
+<!-- Zvysok HTML template -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrácia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Scope+One&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="assets/styles.css" rel="stylesheet">
+</head>
+<body>
 
-<form method="post">
-    <?php if (!empty($errors)) echo "<p style='color:red;'>" . nl2br(htmlspecialchars($errors)) . "</p>"; ?>
-    <label for="firstname">
-        Meno:
-        <input type="text" name="first_name" value="" id="firstname" placeholder="napr. John">
-    </label>
+<nav class="olympic-nav">
+  <div class="olympic-nav-inner">
+    <a class="olympic-nav-item nav-item-blue" href="index.php">
+      Domov
+    </a>
+    <a class="olympic-nav-item nav-item-yellow" href="developer_card.php">
+      Kontakt
+    </a>
+    <a class="olympic-nav-item nav-item-red" href="login.php">
+      Prihlásiť sa
+    </a>
+  </div>
+</nav>
 
-    <label for="lastname">
-        Priezvisko:
-        <input type="text" name="last_name" value="" id="lastname" placeholder="napr. Doe">
-    </label>
+<div class="container py-5">
+  <main>
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-9 col-lg-7">
+        <div class="card shadow-lg">
+          <div class="card-body p-4 p-md-5">
+            <h1 class="mb-1 text-center page-title-accent">Registrácia</h1>
+            <p class="text-center text-muted mb-4">Vytvorte si účet pre prístup k olympijským štatistikám</p>
 
-    <br>
+            <?php if (!empty($errors)): ?>
+              <div class="alert alert-danger" role="alert">
+                <?php echo nl2br(htmlspecialchars($errors)); ?>
+              </div>
+            <?php endif; ?>
 
-    <label for="email">
-        E-mail:
-        <input type="email" name="email" value="" id="email" placeholder="napr. johndoe@example.com">
-    </label>
+            <form method="post">
+              <div class="row g-3 mb-2">
+                <div class="col-12 col-sm-6">
+                  <label for="firstname" class="form-label">Meno</label>
+                  <input type="text" name="first_name" id="firstname" class="form-control" placeholder="napr. John">
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label for="lastname" class="form-label">Priezvisko</label>
+                  <input type="text" name="last_name" id="lastname" class="form-control" placeholder="napr. Doe">
+                </div>
+              </div>
 
-    <label for="password">
-        Heslo:
-        <input type="password" name="password" value="" id="password">
-    </label>
-    <label for="password_repeat">
-        Heslo znova:
-        <input type="password" name="password_repeat" value="" id="password_repeat">
-    </label>
+              <div class="mb-3">
+                <label for="email" class="form-label">E‑mail</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="napr. johndoe@example.com">
+              </div>
 
-    <button type="submit">Vytvoriť konto</button>
-</form>
+              <div class="mb-3">
+                <label for="password" class="form-label">Heslo</label>
+                <input type="password" name="password" id="password" class="form-control">
+              </div>
 
-<p>Máte už konto? <a href="login.php">Prihláste sa tu.</a></p>
+              <div class="mb-4">
+                <label for="password_repeat" class="form-label">Heslo znova</label>
+                <input type="password" name="password_repeat" id="password_repeat" class="form-control">
+              </div>
 
+              <button type="submit" class="btn btn-primary w-100 mb-3">
+                Vytvoriť konto
+              </button>
+
+              <p class="text-center mb-0">
+                Máte už konto?
+                <a href="login.php" class="fw-bold fs-5">Prihláste sa tu.</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<?php
+if (isset($qr_code)) {
+    // Ak sme po uspesnej registracii vygenerovali QR kod, zobrazime ho na stranke
+    $message = '<p>Zadajte kód: ' . $user_secret . ' do aplikácie pre 2FA</p>';
+    $message .= '<p>alebo naskenujte QR kód:<br><img src="' . $qr_code . '" alt="qr kod pre aplikaciu authenticator"></p>';
+    echo $message;
+    echo '<p>Teraz sa môžete prihlásiť: <a href="login.php">Login stránka</a></p>';
+}
+?>
+</main>
+</div>
+</body>
 </html>

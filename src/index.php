@@ -4,9 +4,9 @@ session_start();
 require_once(__DIR__ . '/config.php');
 
 $conn = connectDatabase($hostname, $database, $username, $password);
-if ($conn) {
-    echo "Pripojene k DB.";
-}
+// if ($conn) {
+//     echo "Pripojene k DB.";
+// }
 
 // ---------------------------
 // FUNKCIE PRE VKLADANIE DAT
@@ -294,33 +294,103 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Olympijské medaily</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Datatables + Bootstrap 5 skin -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Scope+One&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="assets/styles.css" rel="stylesheet">
 </head>
 <body>
 
-<?php
-    
-    if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true ) {
-        // Pouzivatel nie je prihlaseny, zobraz odkazy na prihlasovaci a registracny formular.
-        echo '<p>Pre pokračovanie sa prosím <a href="login.php">prihláste</a> alebo sa <a href="register.php">zaregistrujte</a>.</p>';
-    } else {
-        // Pouzivatel je prihlaseny, zobraz jeho meno a odkazy na zabezpecene stranky.
-        echo '<h3>Vitaj ' . $_SESSION['full_name'] . ' </h3>';
-        echo '<a href="index.php">Hlavna stránka</a>';
-    }
+<?php $isLoggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true; ?>
 
+<nav class="olympic-nav">
+  <div class="olympic-nav-inner">
+    <a class="olympic-nav-item nav-item-blue" href="index.php">
+      Domov
+    </a>
+    <?php if ($isLoggedIn): ?>
+      <a class="olympic-nav-item nav-item-yellow" href="profile_settings.php">
+        Nastavenia profilu
+      </a>
+      <a class="olympic-nav-item nav-item-red" href="logout.php">
+        Odhlásiť sa
+      </a>
+    <?php else: ?>
+      <a class="olympic-nav-item nav-item-yellow" href="developer_card.php">
+        Kontakt
+      </a>
+      <a class="olympic-nav-item nav-item-red" href="login.php">
+        Prihlásenie
+      </a>
+    <?php endif; ?>
+  </div>
+</nav>
+
+<?php
+    if (!$isLoggedIn) {
+?>
+
+<div class="container py-5">
+    <main>
+        <div class="row justify-content-center g-4">
+            <div class="col-12 col-lg-8">
+                <section class="card shadow-lg border-0">
+                    <div class="card-body p-4 p-md-5">
+                        <h1 class="page-title-accent mb-3" style="font-size: 2.5em;">Vitajte!</h1>
+                        <p class="page-subtitle mb-4" style="font-size: 1.8em;">
+                            na našej webovej stránke Olympijské hry.
+                        </p>
+                        <p class="mb-3 fs-5">
+                            Tu sa môžete dozvedieť, ktorí olympionici získali medaily a v ktorých rokoch.
+                            Stačí sa prihlásiť do svojho konta a nahrať zoznam výsledkov, ktorý vám
+                            prehľadne zobrazíme v tabuľke.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-12 col-lg-8">
+                <section class="card shadow-lg border-0">
+                    <div class="card-body p-4 p-md-5">
+                        <p class="mb-4 fs-5">
+                            Na zobrazenie údajov je potrebné sa
+                            <a href="login.php" class="fw-bold fs-4">prihlásiť</a>
+                            alebo sa
+                            <a href="register.php" class="fw-bold fs-4">zaregistrovať</a>
+                            a vytvoriť si účet.
+                        </p>
+                        <p class="mb-0 text-muted fs-5">
+                            Viac o autorovi nájdete na stránke
+                            <a href="developer_card.php" class="fw-bold fs-4">Kontakt</a>.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</div>
+
+<?php
+}
 ?>
 
 <?php
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+if ($isLoggedIn) {
 ?>
 
 <div class="container mt-4">
+    <main>
+        
+    <h3>Vitaj <?php echo $_SESSION['full_name'] ?></h3>
+    <p><strong>e-mail:</strong> <?php echo $_SESSION['email']; ?></p>
 
     <h2>Slovenské olympijské medaily</h2>
 
@@ -336,20 +406,22 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     </div>
 
     <!-- ── General table ────────────────────────────────────────── -->
-    <table id="general-table" class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Meno a priezvisko</th>
-                <th>Krajina OH</th>
-                <th>Rok OH</th>
-                <th>Umiestnenie</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Datatables fills this via AJAX from data_general.php -->
-        </tbody>
-    </table>
-
+    <div class="table-responsive">
+        <table id="general-table" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Meno a priezvisko</th>
+                    <th>Krajina OH</th>
+                    <th>Rok OH</th>
+                    <th>Umiestnenie</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Datatables fills this via AJAX from data_general.php -->
+            </tbody>
+        </table>
+    </div>
+</main>
 </div>
 
 <!-- Scripts -->

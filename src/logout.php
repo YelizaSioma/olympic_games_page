@@ -6,3 +6,4 @@ session_unset();
 session_destroy();  // Vymazanie session 
 header("location: login.php");  // Presmerovanie na inu stranku.
 exit;  // Ukoncenie vykonavania PHP skriptu.
+?>

@@ -1,0 +1,408 @@
+/* ===========================
+   Global layout & typography
+   =========================== */
+
+:root {
+    /* Olympic ring colors */
+    --ring-blue:  #0085C7;
+    --ring-yellow:#F4C300;
+    --ring-black: #000000;
+    --ring-green:#009F3D;
+    --ring-red:  #DF0024;
+
+    --bg-body: #ffffff;
+    --text-main: #111111;
+    --text-muted: #666666;
+}
+
+/* Full-width, wide-feel page */
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-body);
+    color: var(--text-main);
+    font-family: 'Playfair Display', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', serif;
+}
+
+/* Main container can still use Bootstrap .container,
+   but we let content “breathe” horizontally */
+.page-wrapper {
+    padding: 1.5rem 2rem;
+}
+
+@media (max-width: 576px) {
+    .page-wrapper {
+        padding: 1rem 1.25rem;
+    }
+}
+
+/* Headings – large, cinematic feel */
+.page-title {
+    font-size: clamp(2.2rem, 3vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.page-subtitle {
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+/* Simple Olympic accent underline */
+.page-title-accent {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+}
+
+.page-title-accent::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(
+        to right,
+        var(--ring-blue),
+        var(--ring-yellow),
+        var(--ring-black),
+        var(--ring-green),
+        var(--ring-red)
+    );
+}
+
+/* ===========================
+   Navigation bar
+   =========================== */
+
+.olympic-nav {
+    width: 100%;
+    border-bottom: 2px solid var(--ring-black);
+    background: #ffffff;
+}
+
+.olympic-nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    justify-content: center;
+}
+
+/* Base style shared by all 3 nav sections - visually one panel */
+.olympic-nav-item {
+    flex: 1 1 0;
+    text-align: center;
+    text-decoration: none;
+    background: #000000;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0; /* items will share a single container radius */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.8rem;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
+}
+
+/* Visually connect items into one panel, with thin white separators */
+.olympic-nav-inner {
+    border-radius: 0.6rem;
+    overflow: hidden;
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.18);
+}
+
+.olympic-nav-item + .olympic-nav-item {
+    border-left: 2px solid #ffffff;
+}
+
+/* Borders in green, yellow, red for the 3 sections */
+.nav-item-blue {
+    border: 2px solid var(--ring-green);
+}
+
+.nav-item-yellow {
+    border: 2px solid var(--ring-yellow);
+}
+
+.nav-item-red {
+    border: 2px solid var(--ring-red);
+}
+
+/* Hover / active states */
+.olympic-nav-item:hover,
+.olympic-nav-item:focus {
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.35);
+}
+
+.nav-item-blue:hover,
+.nav-item-blue:focus {
+    background: var(--ring-green);
+}
+
+.nav-item-yellow:hover,
+.nav-item-yellow:focus {
+    background: var(--ring-yellow);
+    color: #000000;
+}
+
+.nav-item-red:hover,
+.nav-item-red:focus {
+    background: var(--ring-red);
+}
+
+/* Mobile: stack the 3 items, slightly smaller text */
+@media (max-width: 576px) {
+    .olympic-nav-inner {
+        flex-direction: column;
+        padding-inline: 1rem;
+        border-radius: 0.6rem;
+    }
+
+    .olympic-nav-item {
+        font-size: 0.85rem;
+    }
+
+    .olympic-nav-item + .olympic-nav-item {
+        border-left: none;
+        border-top: 2px solid #ffffff;
+    }
+}
+
+/* ===========================
+   Buttons – square-ish feel
+   =========================== */
+
+.btn,
+button,
+input[type="submit"],
+input[type="button"] {
+    border-radius: 0.3rem !important; /* almost square */
+    padding: 0.55rem 1.1rem;
+}
+
+/* Primary button: black base with Olympic accent hover */
+.btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: linear-gradient(
+        135deg,
+        var(--ring-blue),
+        var(--ring-yellow),
+        var(--ring-black),
+        var(--ring-green),
+        var(--ring-red)
+    );
+    border-color: #000000;
+}
+
+/* ===========================
+   Forms
+   =========================== */
+
+form {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 0.6rem;
+    border: 1px solid #d7d7d7;
+}
+
+/* Inputs, selects, textareas */
+form .form-control,
+form select,
+form textarea {
+    border-radius: 0.3rem;
+    border: 1px solid #c0c0c0;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    font-family: 'Playfair Display', serif;
+}
+
+form .form-control:focus,
+form select:focus,
+form textarea:focus {
+    border-color: var(--ring-blue);
+    box-shadow: 0 0 0 0.15rem rgba(0, 133, 199, 0.25);
+    background-color: #f9fbff;
+}
+
+/* Labels */
+form label {
+    font-weight: 600;
+}
+
+/* Mobile forms: stack file input and button vertically */
+@media (max-width: 576px) {
+    .card-body form.d-flex {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .card-body form.d-flex .form-control.w-auto {
+        width: 100% !important;
+    }
+
+    .card-body form.d-flex .btn {
+        width: 100%;
+    }
+}
+
+/* ===========================
+   Tables (including DataTables)
+   =========================== */
+
+/* Use Scope One font for data cells */
+table,
+table td,
+table th {
+    font-family: 'Scope One', 'Playfair Display', serif;
+    font-size: 1rem;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+table thead th {
+    background: #000000;
+    color: #ffffff;
+    padding: 0.75rem;
+    border-bottom: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Zebra rows in subtle grayscale */
+table tbody tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+table tbody tr:nth-child(odd) {
+    background: #ffffff;
+}
+
+/* Hover highlight with Olympic blue */
+table tbody tr:hover {
+    background: rgba(0, 133, 199, 0.08);
+}
+
+table td {
+    padding: 0.7rem 0.9rem;
+    border-top: 1px solid #bfbfbf;
+}
+
+/* Athlete name links in tables: dark blue + underline */
+#general-table tbody a {
+    color: #003366;
+    text-decoration: underline;
+}
+
+#general-table tbody a:hover,
+#general-table tbody a:focus {
+    color: #0055aa;
+}
+
+/* Stronger grid lines between rows and columns */
+table th,
+table td {
+    border-right: 1px solid #bfbfbf;
+}
+
+table th:last-child,
+table td:last-child {
+    border-right: none;
+}
+
+/* Athlete name links in tables: dark blue + underline */
+#general-table tbody a {
+    color: #003366;
+    text-decoration: underline;
+}
+
+#general-table tbody a:hover,
+#general-table tbody a:focus {
+    color: #0055aa;
+}
+
+/* Mobile: slightly smaller table font to fit */
+@media (max-width: 576px) {
+    table,
+    table td,
+    table th {
+        font-size: 0.85rem;
+    }
+}
+
+/* DataTables controls in black & white + accent */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 0.3rem;
+    border: 1px solid #c0c0c0;
+    padding: 0.25rem 0.5rem;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: var(--ring-blue);
+    outline: none;
+}
+
+/* Pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 0.3rem;
+    border: 1px solid transparent;
+    padding: 0.25rem 0.6rem;
+    margin: 0 0.1rem;
+    color: #000000 !important;
+    background: transparent;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: var(--ring-black) !important;
+    color: #ffffff !important;
+    border-color: var(--ring-black) !important;
+}
+
+/* ===========================
+   Misc helpers
+   =========================== */
+
+.text-ring-blue   { color: var(--ring-blue); }
+.text-ring-yellow { color: var(--ring-yellow); }
+.text-ring-black  { color: var(--ring-black); }
+.text-ring-green  { color: var(--ring-green); }
+.text-ring-red    { color: var(--ring-red); }
+
+.bg-ring-blue   { background-color: var(--ring-blue); }
+.bg-ring-yellow { background-color: var(--ring-yellow); }
+.bg-ring-black  { background-color: var(--ring-black); }
+.bg-ring-green  { background-color: var(--ring-green); }
+.bg-ring-red    { background-color: var(--ring-red); }

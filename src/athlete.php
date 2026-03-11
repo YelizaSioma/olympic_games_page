@@ -27,15 +27,37 @@ if (!$athlete) {
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sportovci</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Datatables + Bootstrap 5 skin -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Scope+One&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="assets/styles.css" rel="stylesheet">
 </head>
 <body>
+
+<nav class="olympic-nav">
+  <div class="olympic-nav-inner">
+    <a class="olympic-nav-item nav-item-blue" href="index.php">
+      Domov
+    </a>
+    <a class="olympic-nav-item nav-item-yellow" href="profile_settings.php">
+      Nastavenia profilu
+    </a>
+    <a class="olympic-nav-item nav-item-red" href="logout.php">
+      Odhlásiť sa
+    </a>
+  </div>
+</nav>
+
 <div class="container mt-4">
+<main>
     <table id="athlete-main-table" class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -69,6 +91,7 @@ if (!$athlete) {
              <!-- Datatables fills this via fetch from data_athlete.php -->
         </tbody>
     </table>
+</main>
 </div>
 
 <!-- Scripts -->
