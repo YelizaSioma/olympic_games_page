@@ -2,6 +2,15 @@
 require_once(__DIR__ . '/../config.php');
 $conn = connectDatabase($hostname, $database, $username, $password);
 
+session_start();
+
+header('Content-Type: application/json; charset=utf-8');
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    echo json_encode(['data' => []]);
+    exit;
+}
+
 // Get athlete ID from endpoint string, if wasn't provided then 0 then error
 $athleteId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($athleteId <= 0) {
@@ -59,7 +68,6 @@ $stmt = $conn->prepare($sqlMedals);
 $stmt->execute([':id' => $athleteId]);
 $medals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-header('Content-Type: application/json; charset=utf-8');
 echo json_encode([
     'athlete' => [$athlete],
     'medals'  => $medals

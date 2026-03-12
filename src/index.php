@@ -374,6 +374,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
                     </div>
                 </section>
             </div>
+
+            <div class="col-12 col-lg-8">
+                <div>
+                    <section class="card shadow-lg border-0">
+                        <div class="card-body p-4 p-md-5">
+                            <p class="mb-0 text-muted fs-5">
+                                „Táto stránka používa súbory cookie, aby vám poskytla lepší používateľský zážitok. Používaním tejto stránky s tým súhlasíte: V našej chránenej databáze budeme uchovávať vaše prihlasovacie meno, id, čas vytvorenia účtu, spôsob autorizácie, meno a priezvisko, ak ich poskytnete, ako aj heslá. Heslá sú chránené hash algoritmom. Nikto nemá prístup k vašim údajom. Uchovávame ich, aby sme vám mohli zobraziť históriu vašich prihlásení na našej stránke.
+                            </p>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
     </main>
 </div>
@@ -449,7 +461,6 @@ $(document).ready(function () {
         columns: [
             {
                 // Combine first_name + last_name into a clickable link
-                // athlete.php?id=X is a dummy link for now — detail page comes later
                 data: null,
                 render: function (row) {
                     return '<a href="athlete.php?id=' + row.athlete_id + '">'
@@ -461,8 +472,8 @@ $(document).ready(function () {
             { data: 'oh_year' },
             { data: 'placing' }
         ],
-        order: [[2, 'asc']],   // default sort by year ascending
-        pageLength: 25,
+        order: [[2, 'asc']],
+        pageLength: 10,
         language: {
             search: "Hľadať:",
             lengthMenu: "Zobraziť _MENU_ záznamov",

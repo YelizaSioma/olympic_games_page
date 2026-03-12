@@ -6,6 +6,11 @@ require_once 'vendor/autoload.php';
 
 use Google\Client;
 
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
 $client = new Client();
 // Zavolanie funkcie setAuthConfig pre nastavenie cesty s autorizacnymi udajmi OAuth klienta 
 // ktore sa nachadzaju v client_secret.json subore. Subor je mozne stiahnut z Google Cloud konzoly.
@@ -22,11 +27,6 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $_SESSION['full_name'] = $account_info->name;
     $_SESSION['gid'] = $account_info->id;
     $_SESSION['email'] = $account_info->email;
-}
-
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("Location: login.php");
-    exit;
 }
 ?>
 

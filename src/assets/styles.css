@@ -181,9 +181,7 @@ body {
     }
 }
 
-/* ===========================
-   Buttons – square-ish feel
-   =========================== */
+/* Buttons – square-ish feel */
 
 .btn,
 button,
@@ -213,9 +211,7 @@ input[type="button"] {
     border-color: #000000;
 }
 
-/* ===========================
-   Forms
-   =========================== */
+/* Forms */
 
 form {
     background: #ffffff;
@@ -265,9 +261,7 @@ form label {
     }
 }
 
-/* ===========================
-   Tables (including DataTables)
-   =========================== */
+/* Tables (including DataTables) */
 
 /* Tables */
 table,

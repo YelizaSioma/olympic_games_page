@@ -186,7 +186,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <script>
 $(document).ready(function () {
   $('#login-history-table').DataTable({
-    ajax: { url: 'api/login_history.php', dataSrc: 'data' },
+    ajax: { url: 'api/login_history.php', 
+    dataSrc: 'data' },
     columns: [
       { data: 'login_type' },
       { data: 'created_at' }

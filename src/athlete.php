@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
 require_once(__DIR__ . '/config.php');
 $conn = connectDatabase($hostname, $database, $username, $password);
 
@@ -58,6 +65,7 @@ if (!$athlete) {
 
 <div class="container mt-4">
 <main>
+    <div class="table-responsive">
     <table id="athlete-main-table" class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -72,10 +80,11 @@ if (!$athlete) {
             </tr>
         </thead>
         <tbody>
-            <!-- Datatables fills this via fetch from data_athlete.php -->
+            <!-- Datatables fills this via fetch from data_athlete.php athlete table -->
         </tbody>
     </table>
-
+    </div>
+    <div class="table-responsive">
     <table id="athlete-medals-table" class="table table-striped table-bordered">
         <thead>
             <th>Umiestnenie</th>
@@ -88,9 +97,10 @@ if (!$athlete) {
             <th>Kod OH</th>
         </thead>
         <tbody>
-             <!-- Datatables fills this via fetch from data_athlete.php -->
+             <!-- Datatables fills this via fetch from data_athlete.php medals table -->
         </tbody>
     </table>
+    </div>
 </main>
 </div>
 

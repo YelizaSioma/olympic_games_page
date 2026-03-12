@@ -155,7 +155,7 @@ unset($pdo);
             <form action="" method="post">
               <div class="mb-3">
                 <label for="email" class="form-label">E‑mail</label>
-                <input type="email" name="email" id="email" class="form-control" required>
+                <input type="email" name="email" id="email" class="form-control" required maxlength="128">
               </div>
 
               <div class="mb-3">

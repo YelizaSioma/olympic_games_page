@@ -150,27 +150,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <div class="row g-3 mb-2">
                 <div class="col-12 col-sm-6">
                   <label for="firstname" class="form-label">Meno</label>
-                  <input type="text" name="first_name" id="firstname" class="form-control" placeholder="napr. John">
+                  <input type="text" name="first_name" id="firstname" class="form-control" placeholder="napr. John" maxlength="64"
+                  pattern="[A-Za-z-' ]+" required>
                 </div>
                 <div class="col-12 col-sm-6">
                   <label for="lastname" class="form-label">Priezvisko</label>
-                  <input type="text" name="last_name" id="lastname" class="form-control" placeholder="napr. Doe">
+                  <input type="text" name="last_name" id="lastname" class="form-control" placeholder="napr. Doe" maxlength="64"
+                  pattern="[A-Za-z-' ]+" required>
                 </div>
               </div>
 
               <div class="mb-3">
                 <label for="email" class="form-label">E‑mail</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="napr. johndoe@example.com">
+                <input type="email" name="email" id="email" class="form-control" placeholder="napr. johndoe@example.com" required>
               </div>
 
               <div class="mb-3">
                 <label for="password" class="form-label">Heslo</label>
-                <input type="password" name="password" id="password" class="form-control">
+                <input type="password" name="password" id="password" class="form-control" required minlength="6">
               </div>
 
               <div class="mb-4">
                 <label for="password_repeat" class="form-label">Heslo znova</label>
-                <input type="password" name="password_repeat" id="password_repeat" class="form-control">
+                <input type="password" name="password_repeat" id="password_repeat" class="form-control" required minlength="6">
               </div>
 
               <button type="submit" class="btn btn-primary w-100 mb-3">
@@ -189,33 +191,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php
 if (isset($qr_code)) {
-    // Ak sme po uspesnej registracii vygenerovali QR kod, zobrazime ho na stranke v stylovanom bloku
-    ?>
-    <div class="mt-4">
-      <div class="card shadow-sm border-0">
-        <div class="card-body p-4">
-          <h2 class="page-title-accent mb-3" style="font-size: 1.6em;">
-            Nastavte si 2FA ochranu
-          </h2>
-          <p class="mb-2 fs-5">
-            Zadajte kód:
-            <strong><?php echo htmlspecialchars($user_secret, ENT_QUOTES, 'UTF-8'); ?></strong>
-            do aplikácie pre 2FA.
-          </p>
-          <p class="mb-3 fs-5">
-            alebo naskenujte QR kód:
-          </p>
-          <div class="mb-3">
-            <img src="<?php echo $qr_code; ?>" alt="QR kód pre aplikáciu authenticator" class="img-fluid">
-          </div>
-          <p class="mb-0 fs-5">
-            Teraz sa môžete prihlásiť:
-            <a href="login.php" class="fw-bold fs-5">Login stránka</a>
-          </p>
-        </div>
+    // po uspesnej registracii
+?>
+
+<script>
+  window.addEventListener('load', function () {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth'
+    });
+  });
+</script>
+
+<div class="mt-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <h2 class="page-title-accent mb-3" style="font-size: 1.6em;">
+        Nastavte si 2FA ochranu
+      </h2>
+      <p class="mb-2 fs-5">
+        Zadajte kód:
+        <strong><?php echo htmlspecialchars($user_secret, ENT_QUOTES, 'UTF-8'); ?></strong>
+        do aplikácie pre 2FA.
+      </p>
+      <p class="mb-3 fs-5">
+        alebo naskenujte QR kód:
+      </p>
+      <div class="mb-3">
+        <img src="<?php echo $qr_code; ?>" alt="QR kód pre aplikáciu authenticator" class="img-fluid">
       </div>
+      <p class="mb-0 fs-5">
+        Teraz sa môžete prihlásiť:
+        <a href="login.php" class="fw-bold fs-5">Login stránka</a>
+      </p>
     </div>
-    <?php
+  </div>
+</div>
+
+<?php
 }
 ?>
 </main>

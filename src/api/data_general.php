@@ -2,6 +2,15 @@
 require_once(__DIR__ . '/../config.php');
 $conn = connectDatabase($hostname, $database, $username, $password);
 
+session_start();
+
+header('Content-Type: application/json; charset=utf-8');
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    echo json_encode(['data' => []]);
+    exit;
+}
+
 $sql = "
     SELECT
         a.id          AS athlete_id,
@@ -21,5 +30,4 @@ $sql = "
 $stmt = $conn->query($sql);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-header('Content-Type: application/json; charset=utf-8');
 echo json_encode(['data' => $rows]);
