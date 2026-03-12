@@ -15,7 +15,6 @@ use RobThree\Auth\Providers\Qr\EndroidQrCodeProvider;
 use RobThree\Auth\TwoFactorAuth;
 
 // Odkaz na stranku oauth2callback.php, ktora zabezpecuje autentifikaciu Google OAuth
-// $redirect_uri = "https://node84.webte.fei.stuba.sk/oauth2callback.php";
 $redirect_uri = "http://localhost:8080/oauth2callback.php";
 
 $pdo = connectDatabase($hostname, $database, $username, $password);

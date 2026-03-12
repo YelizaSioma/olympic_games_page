@@ -1,31 +1,3 @@
-# FOR SERVER PROD VERSION NEED TO INSTALL COMPOSER
-via composer:
-- 2FA knižnica - knižnica pre 2FA
-- Bacon QR Code - knižnica pre generovanie QR kódov pre 2FA
-- Google PHP API Client Library - knižnica pre prácu s Google API službami
-
-# TODO:
-1) forgot_password add code and logic
-2) add config to prod version:
-Adresár vendor by nemal byť prístupný z webového prehliadača. Na tento účel si môžeme do Nginx Virtual Host Configuration doplniť pravidlo, ktoré k nemu explicitne zakazuje prístup:
-...
-location ~* /vendor/ {
-    deny all;
-    return 403;
-}
-...
-3) Súbor composer.json pre beh stránok nie je potrebný. Preto sa musí nachádzať v odovzdanom ZIP archíve a vo vašom lokálnom/remote repozitári, kde máte vývojovú verziu aplikácie - slúži na aktualizáciu a reinštaláciu existujúcich balíkov. V produkčnom prostredí nemá čo robiť a pri nasadzovaní riešenia na server ho nezabudnite zo serveru vymazať.
-4) ![alt text](image.png)
-change in google oath  https://console.cloud.google.com/auth/clients/create?authuser=3&organizationId=0&project=olympic-games-489817
-Redirect URI je možné hocikedy zmeniť alebo upraviť. Efekt sa ale môže prejaviť až neskôr. Ak niečo nefunguje, Google to väčšinou vypíše priamo v prehliadači, kde je chyba a je potrebné si skontrolovať, či presmerujem používateľa naozaj tam, kam som zadal v Google konzole.
-5) reed the whole code. Understand JQuery, Dtatables,Bootstrap, PDO
-
-# NOT IMPLEMENTED:
-1) Implementujte tlaˇcidlo vymazania ´udajov - Pozor! - funkcionalita n´asledn´eho
-importu mus´ı ostat’ zachovan´a.
-
-
-
 ***
 
 ## Project: Slovak Olympic Medals Web Application
@@ -44,8 +16,36 @@ importu mus´ı ostat’ zachovan´a.
 
 ***
 
+### Composer packages installation
+```
+composer require robthree/twofactorauth
+composer require bacon/bacon-qr-code ^2
+composer require google/apiclient
+```
+***
 ### Config changes in prod. version:
+```
+$hostname = "";
+$database = "";
+$username = "";
+$password = "";
+```
 
+Inside /etc/nginx/sites-available/
+
+```
+...
+location ~* /vendor/ {
+    deny all;
+    return 403;
+}
+...
+```
+
+Inside login.php and oauth2callback.php change link to an existing in your google cloud console
+```
+$redirect_uri = "https://extisting.link"
+```
 ***
 
 ### Database Schema (`app_db`)
