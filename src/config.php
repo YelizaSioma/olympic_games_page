@@ -12,7 +12,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Databazove konkfiguracne premenne:
-//should be changed after prod to the actual server values $hostname = "localhost" / $database = "ogames_app"; $username = "xsiomchanka"; $password = "874125";
+//should be changed after prod to the actual server values
 $hostname = "db";  // adresa servera, kedze DB je na rovnakom zeleze ako Nginx, je tu localhost
 $database = "app_db";  // nazov databazy - v nasom pripade to bolo ogames_app
 $username = "app_user";  // nazov pouzivatela - ktoreho ste vytvarali cez MariaDB konzolu. Ak ste isli podla navodu, mal by to byt vas login.

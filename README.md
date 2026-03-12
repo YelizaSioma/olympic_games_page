@@ -113,3 +113,10 @@ echo json_encode([
 echo json_encode(['data' => $rows]);
 ```
 ***
+
+***
+#### Not implemented
+1) `forgot.password.php` - password reset. But can be changed if user is logged in.
+2) 2FA QR code regeneration in case of user lost his app account.
+3) Reset imported CSV file option.
+***
