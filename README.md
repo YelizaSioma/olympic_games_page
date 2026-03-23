@@ -40,6 +40,16 @@ location ~* /vendor/ {
     return 403;
 }
 ...
+
+...
+location ~ \.php$ {
+    include fastcgi_params;
+    fastcgi_pass php:9000;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param REQUEST_URI     $request_uri;  # ← ADD THIS LINE
+}
+...
 ```
 
 Inside login.php and oauth2callback.php change link to an existing in your google cloud console

@@ -113,7 +113,7 @@ if (!$athlete) {
 $(document).ready(function () {
     $('#athlete-main-table').DataTable({
         ajax: {
-            url: 'api/data_athlete.php?id=<?= $athleteId ?>',
+            url: 'api/olympic/list/<?= $athleteId ?>',
             dataSrc: 'athlete'
         },
         columns: [
@@ -145,7 +145,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#athlete-medals-table').DataTable({
         ajax: {
-            url: 'api/data_athlete.php?id=<?= $athleteId ?>',
+            url: 'api/olympic/list/<?= $athleteId ?>/medals',
             dataSrc: 'medals'
         },
 

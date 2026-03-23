@@ -455,7 +455,7 @@ $(document).ready(function () {
             "<'row'<'col-12'tr>>" +
             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
         ajax: {
-            url: 'api/data_general.php',
+            url: 'api/olympic/list',
             dataSrc: 'data'
         },
         columns: [
